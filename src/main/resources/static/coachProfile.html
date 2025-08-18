@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Coach Profile</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        :root {
+            --primary-bg: #1A1A1D;
+            --card-bg: #2C2C32;
+            --accent-color: #61A4E3;
+            --text-color: #E2E2E5;
+            --heading-color: #C0C0C7;
+            --box-shadow: rgba(0, 0, 0, 0.4);
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: 'Roboto', sans-serif;
+            color: var(--text-color);
+        }
+
+        body {
+            background-image: url('images/football-main.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+            background-attachment: fixed;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1;
+        }
+
+        .profile-container {
+            position: relative;
+            z-index: 2;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .profile-card {
+            max-width: 700px;
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--box-shadow);
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .header h1 {
+            color: var(--accent-color);
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .personal-info {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .player-photo {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--accent-color);
+            box-shadow: 0 0 15px rgba(97, 164, 227, 0.5);
+            transition: transform 0.4s ease-in-out;
+        }
+
+        .player-photo:hover {
+            transform: scale(1.05);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            width: 100%;
+        }
+
+        .info-item {
+            background-color: rgba(97, 164, 227, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            border-left: 3px solid var(--accent-color);
+        }
+
+        .info-item h3 {
+            margin: 0 0 5px 0;
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-item p {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .section {
+            margin-top: 30px;
+        }
+
+        .section h2 {
+            color: var(--heading-color);
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-box {
+            background: rgba(44, 44, 50, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background 0.3s ease;
+        }
+
+        .stat-box:hover {
+            background: rgba(44, 44, 50, 0.9);
+        }
+
+        .stat-box .label {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--heading-color);
+            margin-bottom: 5px;
+        }
+
+        .stat-box .value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        .status-section {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .status-section .status {
+            font-size: 1.8rem;
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .status.not-injured {
+            background-color: #2ECC71;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(46, 204, 113, 0.5);
+        }
+
+        .status.injured {
+            background-color: #E74C3C;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(231, 76, 60, 0.5);
+        }
+
+        @media (max-width: 600px) {
+            .personal-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="profile-container">
+    <div class="profile-card">
+        <div class="header">
+            <h1>Player Profile</h1>
+        </div>
+
+        <div class="personal-info">
+            <img class="player-photo" src="images/football-main.jpg" alt="Player Photo">
+            <div class="info-grid">
+                <div class="info-item">
+                    <h3>Name</h3>
+                    <p>John</p>
+                </div>
+                <div class="info-item">
+                    <h3>Position</h3>
+                    <p>Forward</p>
+                </div>
+                <div class="info-item">
+                    <h3>Age</h3>
+                    <p>22</p>
+                </div>
+                <div class="info-item">
+                    <h3>Role</h3>
+                    <p>Player</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Performance Statistics</h2>
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <span class="value">10</span>
+                    <span class="label">Goals</span>
+                </div>
+                <div class="stat-box">
+                    <span class="value">5</span>
+                    <span class="label">Assists</span>
+                </div>
+                <div class="stat-box">
+                    <span class="value">300</span>
+                    <span class="label">Completed Passes</span>
+                </div>
+                <div class="stat-box">
+                    <span class="value">8.5</span>
+                    <span class="label">Distance Covered (km)</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Fitness Metrics</h2>
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <span class="value">90.5</span>
+                    <span class="label">Stamina</span>
+                </div>
+                <div class="stat-box">
+                    <span class="value">85.2</span>
+                    <span class="label">Speed</span>
+                </div>
+                <div class="stat-box">
+                    <span class="value">78.0</span>
+                    <span class="label">Strength</span>
+                </div>
+                <div class="stat-box">
+                    <span class="value">88.4</span>
+                    <span class="label">Agility</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="status-section">
+            <p class="status not-injured">Not Injured</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

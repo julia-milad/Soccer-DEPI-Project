@@ -3,13 +3,296 @@
 <head>
     <meta charset="UTF-8">
     <title>Home Page</title>
-    <link rel="stylesheet" href="/styles.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+        html {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            color: #f0f0f0;
+        }
+
+        body {
+            background-image: url('/images/football-main.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: -1;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background-color: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar .logo {
+            font-size: 1.6em;
+            font-weight: 700;
+            color: whitesmoke;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar .logo-img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid black;
+        }
+
+        .navbar .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 25px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar .nav-links li a {
+            color: #f1faee;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: color 0.3s, transform 0.3s;
+            position: relative;
+        }
+
+        .navbar .nav-links li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: -5px;
+            left: 0;
+            background-color: #a8dadc;
+            transition: width 0.3s ease-out;
+        }
+
+        .navbar .nav-links li a:hover {
+            color: #a8dadc;
+            transform: translateY(-2px);
+        }
+
+        .navbar .nav-links li a:hover::after {
+            width: 100%;
+        }
+
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #f1faee;
+            padding: 0 20px;
+            min-height: 50vh; /* Adjust as needed */
+        }
+
+        .hero-section h1 {
+            font-size: 4.5em;
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+            line-height: 1.1;
+        }
+
+        .hero-section p {
+            font-size: 1.5em;
+            font-weight: 400;
+            margin-top: 15px;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+        }
+        .intro {
+            max-width: 800px;
+            margin: 50px auto;
+            text-align: center;
+            padding: 0 20px;
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+
+        .login-section {
+            background-color: rgba(29, 53, 87, 0.8);
+            padding: 50px 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            max-width: 400px;
+            width: 90%;
+            margin: 50px auto;
+            border: 1px solid #457b9d;
+        }
+
+        .login-section h2 {
+            font-size: 2.2em;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #a8dadc;
+        }
+
+        #loginForm {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .text-input {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: 100%;
+        }
+        .button-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        .text-input label {
+            font-size: 1em;
+            font-weight: 500;
+            color: #f1faee;
+            opacity: 0.8;
+        }
+
+        .text-input input {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #457b9d;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #f1faee;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .text-input input:focus {
+            outline: none;
+            border-color: #a8dadc;
+        }
+
+        .text-input input::placeholder {
+            color: rgba(241, 250, 238, 0.5);
+        }
+
+        #loginForm button {
+            padding: 14px 30px; /* Added horizontal padding */
+            border: none;
+            border-radius: 8px;
+            background-color: #457b9d;
+            color: #f1faee;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-top: 10px;
+        }
+
+        #loginForm button:hover {
+            background-color: #386780; /* Slightly darker shade on hover */
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #f1faee;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 50px;
+            position: relative;
+            width: 100%;
+            bottom: 0;
+        }
+
+        .footer a {
+            color: #a8dadc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer a:hover {
+            color: #e63946;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .footer-logo-img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .footer-logo-text {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #a8dadc;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 15px 20px;
+            }
+            .navbar .nav-links {
+                margin-top: 15px;
+                gap: 15px;
+            }
+            .hero-section h1 {
+                font-size: 3em;
+            }
+            .hero-section p {
+                font-size: 1.2em;
+            }
+            .login-section {
+                padding: 30px 15px;
+            }
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar">
     <div class="logo">
         <img src="/images/logo.png" alt="Site Logo" class="logo-img">
-        TMS Football Club
+        TMS
     </div>
     <ul class="nav-links">
         <li><a href="#">Home</a></li>
@@ -19,17 +302,67 @@
     </ul>
 </nav>
 
-<h1>Hello</h1>
+<div class="hero-section">
+    <h1>Welcome to TMS - Training Management System</h1>
+    <p>Where passion meets the pitch.</p>
+</div>
+<div class="intro">
+    <p>Train smarter, track your progress, and improve your skills with professional coaches.</p>
+    <p>Our system helps you monitor your performance, reach your goals, and become the best version of yourself on the field.</p>
+</div>
+
+<div class="login-section">
+    <h2>Login</h2>
+    <form id="loginForm">
+        <div class="text-input">
+            <label for="username">Username:</label>
+            <input type="text" id="username" placeholder="Enter your username"/>
+        </div>
+        <div class="text-input">
+            <label for="password">Password:</label>
+            <input type="password" id="password" placeholder="Enter your password"/>
+        </div>
+        <div class="button-container">
+            <button type="button" onclick="login()">Login</button>
+        </div>
+    </form>
+</div>
 
 <div class="footer">
     <div class="footer-logo">
         <img src="/images/logo.png" alt="Logo" class="footer-logo-img">
-        <span class="footer-logo-text">TMS Football Club</span>
+        <span class="footer-logo-text">TMS</span>
     </div>
-    <p>&copy; 2025 TMS Football Club. All Rights Reserved.
-        <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
-    </p>
+    <p>&copy; 2025 TMS. All Rights Reserved.</p>
 </div>
 
+<script>
+    function login() {
+        const data = {
+            email: document.getElementById("username").value,
+            password: document.getElementById("password").value
+        };
+
+        fetch("/login", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(data)
+        })
+            .then(res => res.text())
+            .then(msg => {
+                if (msg.includes("/playerProfile")) {
+                    window.location.href = "playerProfile.html";
+                } else if (msg.includes("/coachProfile")) {
+                    window.location.href = "coachProfile.html";
+                } else {
+                    alert(msg);
+                }
+            })
+            .catch(error => {
+                console.error("Login failed:", error);
+                alert("Login failed. Please try again.");
+            });
+    }
+</script>
 </body>
 </html>
