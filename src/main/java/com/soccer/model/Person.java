@@ -20,7 +20,8 @@ public abstract class Person {
     protected String role;
     protected int age;
     protected String phone;
-
+    private String image;
+    private String teamId;
 
 
 

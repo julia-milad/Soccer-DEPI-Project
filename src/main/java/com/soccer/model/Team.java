@@ -1,16 +1,20 @@
 package com.soccer.model;
 
 import com.soccer.event.TrainingSession;
+import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
 
 public class Team {
+
+    @Id
+    private String id;
     private String name;
-    private Coach coach;
-    private ArrayList<Player> players;
+    private String coachId;
+    private ArrayList<String> players;
     private ArrayList<TrainingSession> trainingHistory;
 
-    public void addPlayer(Player player) {
+    public void addPlayer(String player) {
         players.add(player);
     }
 
