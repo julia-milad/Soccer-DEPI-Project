@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"> <head>
     <meta charset="UTF-8">
     <title>Home Page</title>
     <style>
@@ -10,6 +9,7 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+
         body::-webkit-scrollbar {
             display: none;
         }
@@ -119,7 +119,7 @@
             text-align: center;
             color: #f1faee;
             padding: 0 20px;
-            min-height: 50vh; /* Adjust as needed */
+            min-height: 50vh;
         }
 
         .hero-section h1 {
@@ -136,6 +136,7 @@
             margin-top: 15px;
             text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
         }
+
         .intro {
             max-width: 800px;
             margin: 50px auto;
@@ -177,11 +178,16 @@
             gap: 5px;
             width: 100%;
         }
+        #role{
+            background-color: rgba(29, 53, 87, 0.8);
+            color: white;
+        }
         .button-container {
             width: 100%;
             display: flex;
             justify-content: center;
         }
+
         .text-input label {
             font-size: 1em;
             font-weight: 500;
@@ -189,7 +195,8 @@
             opacity: 0.8;
         }
 
-        .text-input input {
+        .text-input input,
+        .text-input select {
             padding: 12px;
             border-radius: 8px;
             border: 1px solid #457b9d;
@@ -197,9 +204,17 @@
             color: #f1faee;
             font-size: 1em;
             transition: border-color 0.3s;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 20px;
         }
 
-        .text-input input:focus {
+        .text-input input:focus,
+        .text-input select:focus {
             outline: none;
             border-color: #a8dadc;
         }
@@ -209,7 +224,7 @@
         }
 
         #loginForm button {
-            padding: 14px 30px; /* Added horizontal padding */
+            padding: 14px 30px;
             border: none;
             border-radius: 8px;
             background-color: #457b9d;
@@ -219,10 +234,11 @@
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
             margin-top: 10px;
+            width: 100%;
         }
 
         #loginForm button:hover {
-            background-color: #386780; /* Slightly darker shade on hover */
+            background-color: #386780;
             transform: translateY(-2px);
         }
 
@@ -313,15 +329,24 @@
 
 <div class="login-section">
     <h2>Login</h2>
-    <form id="loginForm">
+    <form id="loginForm" action="/login" method="post">
         <div class="text-input">
-            <label for="username">Username:</label>
-            <input type="text" id="username" placeholder="Enter your username"/>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required/>
         </div>
         <div class="text-input">
             <label for="password">Password:</label>
-            <input type="password" id="password" placeholder="Enter your password"/>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required/>
         </div>
+
+        <div class="text-input">
+            <label for="role">Choose your role:</label>
+            <select id="role" name="role">
+                <option value="player">Player</option>
+                <option value="coach">Coach</option>
+            </select>
+        </div>
+
         <div class="button-container">
             <button type="button" onclick="login()">Login</button>
         </div>
@@ -339,8 +364,9 @@
 <script>
     function login() {
         const data = {
-            email: document.getElementById("username").value,
-            password: document.getElementById("password").value
+            email: document.getElementById("email").value,   // fixed here
+            password: document.getElementById("password").value,
+            role: document.getElementById("role").value
         };
 
         fetch("/login", {
@@ -351,8 +377,10 @@
             .then(res => res.text())
             .then(msg => {
                 if (msg.includes("/playerProfile")) {
+                    sessionStorage.setItem("playerEmail", data.email);
                     window.location.href = "playerProfile.html";
                 } else if (msg.includes("/coachProfile")) {
+                    sessionStorage.setItem("coachEmail", data.email);
                     window.location.href = "coachProfile.html";
                 } else {
                     alert(msg);

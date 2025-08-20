@@ -2,15 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
     <title>Coach Profile</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
@@ -143,35 +134,12 @@
             font-weight: 500;
         }
 
-        .section {
-            margin-top: 30px;
-        }
-
         .section h2 {
             color: var(--heading-color);
             font-size: 1.5rem;
             border-bottom: 2px solid var(--accent-color);
             padding-bottom: 8px;
             margin-bottom: 20px;
-        }
-
-        .stat-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
-        }
-
-        .stat-box {
-            background: rgba(44, 44, 50, 0.7);
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: background 0.3s ease;
-        }
-
-        .stat-box:hover {
-            background: rgba(44, 44, 50, 0.9);
         }
 
         .stat-box .label {
@@ -201,18 +169,6 @@
             transition: all 0.3s ease;
         }
 
-        .status.not-injured {
-            background-color: #2ECC71;
-            color: #fff;
-            box-shadow: 0 0 15px rgba(46, 204, 113, 0.5);
-        }
-
-        .status.injured {
-            background-color: #E74C3C;
-            color: #fff;
-            box-shadow: 0 0 15px rgba(231, 76, 60, 0.5);
-        }
-
         @media (max-width: 600px) {
             .personal-info {
                 flex-direction: column;
@@ -228,7 +184,7 @@
 <div class="profile-container">
     <div class="profile-card">
         <div class="header">
-            <h1>Player Profile</h1>
+            <h1>Profile</h1>
         </div>
 
         <div class="personal-info">
@@ -236,71 +192,55 @@
             <div class="info-grid">
                 <div class="info-item">
                     <h3>Name</h3>
-                    <p>John</p>
-                </div>
-                <div class="info-item">
-                    <h3>Position</h3>
-                    <p>Forward</p>
-                </div>
-                <div class="info-item">
-                    <h3>Age</h3>
-                    <p>22</p>
+                    <p id="coachName"></p>
                 </div>
                 <div class="info-item">
                     <h3>Role</h3>
-                    <p>Player</p>
+                    <p id="coachRole"></p>
+                </div>
+                <div class="info-item">
+                    <h3>Email</h3>
+                    <p id="coachEmail"></p>
+                </div>
+                <div class="info-item">
+                    <h3>Age</h3>
+                    <p id="coachAge"></p>
+                </div>
+                <div class="info-item">
+                    <h3>Phone</h3>
+                    <p id="coachPhone"></p>
                 </div>
             </div>
         </div>
-
-        <div class="section">
-            <h2>Performance Statistics</h2>
-            <div class="stat-grid">
-                <div class="stat-box">
-                    <span class="value">10</span>
-                    <span class="label">Goals</span>
-                </div>
-                <div class="stat-box">
-                    <span class="value">5</span>
-                    <span class="label">Assists</span>
-                </div>
-                <div class="stat-box">
-                    <span class="value">300</span>
-                    <span class="label">Completed Passes</span>
-                </div>
-                <div class="stat-box">
-                    <span class="value">8.5</span>
-                    <span class="label">Distance Covered (km)</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>Fitness Metrics</h2>
-            <div class="stat-grid">
-                <div class="stat-box">
-                    <span class="value">90.5</span>
-                    <span class="label">Stamina</span>
-                </div>
-                <div class="stat-box">
-                    <span class="value">85.2</span>
-                    <span class="label">Speed</span>
-                </div>
-                <div class="stat-box">
-                    <span class="value">78.0</span>
-                    <span class="label">Strength</span>
-                </div>
-                <div class="stat-box">
-                    <span class="value">88.4</span>
-                    <span class="label">Agility</span>
-                </div>
-            </div>
-        </div>
-
         <div class="status-section">
-            <p class="status not-injured">Not Injured</p>
+
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const email = sessionStorage.getItem("coachEmail");
+        if (!email) {
+            alert("Please login first.");
+            window.location.href = "index.html";
+            return;
+        }
+        fetch(`/coach/email/${encodeURIComponent(email)}`)
+            .then(res => res.json())
+            .then(coach => {
+                // document.getElementById('playerPhoto').src = player.photoUrl ?? 'images/football-main.jpg';
+                document.getElementById('coachName').textContent = coach.name ?? undefined;
+                document.getElementById('coachRole').textContent = coach.role ?? undefined;
+                document.getElementById('coachEmail').textContent = coach.email ?? undefined;
+                document.getElementById('coachAge').textContent = coach?.age ?? undefined;
+                document.getElementById('coachPhone').textContent = coach.phone ?? undefined;
+                // document.getElementById('coachGoals').textContent = coach.teamId ?? undefined;
+            })
+            .catch(err => {
+                console.error("Failed to load data:", err);
+                alert("Error loading profile");
+            });
+    });
+</script>
 </body>
 </html>
