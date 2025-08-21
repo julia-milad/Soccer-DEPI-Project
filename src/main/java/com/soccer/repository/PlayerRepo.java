@@ -1,4 +1,4 @@
-package com.soccer.soccer_depi_project;
+package com.soccer.repository;
 
 import com.soccer.model.Player;
 import org.springframework.data.mongodb.repository.MongoRepository;

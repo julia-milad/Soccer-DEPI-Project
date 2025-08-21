@@ -17,6 +17,12 @@ public class Player extends Person {
     private Fitness fitness;
     private boolean injured;
 
+    public void markInjured() {
+        this.injured = true;
+    }
 
+    public void recover() {
+        this.injured = false;
+    }
 
 }

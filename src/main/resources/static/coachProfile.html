@@ -210,14 +210,32 @@
                     <h3>Phone</h3>
                     <p id="coachPhone"></p>
                 </div>
+                <div class="info-item">
+                    <h3>Your Team</h3>
+                    <p id="coachTeam"></p>
+                </div>
             </div>
         </div>
-        <div class="status-section">
-
+        <div class="status-section" onclick="manageTeam()" style="cursor: pointer;">
+            <h2>Manage your team</h2>
+            <p>Click here to manage and view your team</p>
+        </div>
+        <div class="status-section" style="cursor: pointer;">
+            <h2>Manage your training sessions</h2>
+            <p>Click here to manage and view your seesion</p>
         </div>
     </div>
 </div>
 <script>
+    let currentCoach = null;
+    function manageTeam() {
+        if (!currentCoach || !currentCoach.teamId) {
+            alert("No team assigned.");
+            return;
+        }
+        sessionStorage.setItem("coachTeam", currentCoach.teamId);
+        window.location.href = "playersPerTeam.html";
+    }
     document.addEventListener('DOMContentLoaded', () => {
         const email = sessionStorage.getItem("coachEmail");
         if (!email) {
@@ -228,16 +246,32 @@
         fetch(`/coach/email/${encodeURIComponent(email)}`)
             .then(res => res.json())
             .then(coach => {
-                // document.getElementById('playerPhoto').src = player.photoUrl ?? 'images/football-main.jpg';
-                document.getElementById('coachName').textContent = coach.name ?? undefined;
-                document.getElementById('coachRole').textContent = coach.role ?? undefined;
-                document.getElementById('coachEmail').textContent = coach.email ?? undefined;
-                document.getElementById('coachAge').textContent = coach?.age ?? undefined;
-                document.getElementById('coachPhone').textContent = coach.phone ?? undefined;
-                // document.getElementById('coachGoals').textContent = coach.teamId ?? undefined;
+                currentCoach = coach; // store globally
+                document.getElementById('coachName').textContent = coach.name ?? '';
+                document.getElementById('coachRole').textContent = coach.role ?? '';
+                document.getElementById('coachEmail').textContent = coach.email ?? '';
+                document.getElementById('coachAge').textContent = coach.age ?? '';
+                document.getElementById('coachPhone').textContent = coach.phone ?? '';
+
+                if (!coach.teamId) {
+                    document.getElementById('coachTeam').textContent = 'No team assigned';
+                } else {
+                    fetch(`/team/${coach.teamId}`)
+                        .then(res => {
+                            if (!res.ok) throw new Error('Team not found');
+                            return res.json();
+                        })
+                        .then(team => {
+                            document.getElementById('coachTeam').textContent = team.name ?? 'No team';
+                        })
+                        .catch(err => {
+                            console.error("Failed to load team:", err);
+                            document.getElementById('coachTeam').textContent = 'Unknown team';
+                        });
+                }
             })
             .catch(err => {
-                console.error("Failed to load data:", err);
+                console.error("Failed to load coach:", err);
                 alert("Error loading profile");
             });
     });
