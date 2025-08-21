@@ -1,8 +1,6 @@
-package com.soccer.Manage;
+package com.soccer.repository;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Data
 public class LoginRequest {

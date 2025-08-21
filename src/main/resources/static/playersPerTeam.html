@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Team Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            padding: 20px;
+        }
+        .team-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 500px;
+            margin: auto;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .section {
+            margin: 15px 0;
+        }
+        .section strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+        ul {
+            list-style: square;
+            padding-left: 20px;
+        }
+        input, button, select {
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            cursor: pointer;
+            background: #007bff;
+            color: white;
+            border: none;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="team-container">
+    <h2>Team Profile</h2>
+
+    <div class="section">
+        <strong>Team Name:</strong>
+        <span id="teamName">Loading...</span>
+    </div>
+
+    <div class="section">
+        <strong>Coach Name:</strong>
+        <span id="coachName">Loading...</span>
+    </div>
+
+    <div class="section">
+        <strong>Players:</strong>
+        <ul id="playersList">
+            <li>Loading...</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <strong>Add Player by Email:</strong>
+        <input type="email" id="newPlayerEmail" placeholder="Enter player email">
+        <button onclick="addPlayer()">Add Player</button>
+    </div>
+
+    <div class="section">
+        <strong>Remove Player:</strong>
+        <select id="removePlayerSelect"></select>
+        <button onclick="removePlayer()">Remove Player</button>
+    </div>
+
+    <div class="section">
+        <strong>Update Player Injury Status:</strong>
+        <select id="injuryPlayerSelect"></select>
+        <select id="injuryStatusSelect">
+            <option value="false">Not Injured</option>
+            <option value="true">Injured</option>
+        </select>
+        <button onclick="updateInjuryStatus()">Update</button>
+    </div>
+
+</div>
+
+<script>
+    let teamData = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const teamId = sessionStorage.getItem("coachTeam");
+        if (!teamId) {
+            alert("Please login first.");
+            window.location.href = "index.html";
+            return;
+        }
+
+        loadTeam(teamId);
+    });
+
+    function loadTeam(teamId) {
+        fetch(`/team/${teamId}`)
+            .then(res => res.json())
+            .then(team => {
+                teamData = team;
+                document.getElementById("teamName").textContent = team.name;
+                document.getElementById("coachName").textContent = team.coachName;
+
+                const playersList = document.getElementById("playersList");
+                const removeSelect = document.getElementById("removePlayerSelect");
+                const injurySelect = document.getElementById("injuryPlayerSelect");
+                playersList.innerHTML = "";
+                removeSelect.innerHTML = "";
+                injurySelect.innerHTML = "";
+
+                if (team.playersIds && team.playersIds.length > 0) {
+                    team.playersIds.forEach(pid => {
+                        fetch(`/player/id/${pid}`)
+                            .then(res => res.json())
+                            .then(player => {
+                                const li = document.createElement("li");
+                                li.textContent = `${player.name} (${player.position ?? "No position"}) - ${player.injured ? "Injured" : "Healthy"}`;
+                                playersList.appendChild(li);
+
+                                const option1 = document.createElement("option");
+                                option1.value = pid;
+                                option1.textContent = player.name;
+                                removeSelect.appendChild(option1);
+
+                                const option2 = document.createElement("option");
+                                option2.value = pid;
+                                option2.textContent = player.name;
+                                injurySelect.appendChild(option2);
+                            })
+                            .catch(() => {
+                                const li = document.createElement("li");
+                                li.textContent = "Error loading player";
+                                playersList.appendChild(li);
+                            });
+                    });
+                } else {
+                    playersList.innerHTML = "<li>No players assigned</li>";
+                }
+            })
+            .catch(err => {
+                console.error("Error loading team data:", err);
+                document.getElementById("teamName").textContent = "Error loading data";
+            });
+    }
+
+
+    function addPlayer() {
+        const playerEmail = document.getElementById("newPlayerEmail").value.trim();
+        if (!playerEmail) {
+            alert("Enter a valid player email");
+            return;
+        }
+
+        console.log("before fetch");
+        fetch(`/team/${teamData.id}/addPlayer/${playerEmail}`, {
+            method: "POST"
+        })
+            .then(res => {
+                if (!res.ok) {
+                    return res.text().then(msg => { throw new Error(msg); });
+                }
+                return res.text();
+            })
+            .then(msg => {
+                alert(msg);
+                loadTeam(teamData.id);
+            })
+            .catch(err => {
+                console.error(err);
+                alert(err.message);
+            });
+    }
+
+    console.log("after");
+
+    function removePlayer() {
+        const playerId = document.getElementById("removePlayerSelect").value;
+        if (!playerId) {
+            alert("Select a player to remove");
+            return;
+        }
+
+        fetch(`/team/${teamData.id}/removePlayer?playerId=${playerId}`, {
+            method: "DELETE"
+        })
+            .then(res => {
+                if (!res.ok) throw new Error("Failed to remove player");
+                return res.text();
+            })
+            .then(() => {
+                alert("Player removed successfully!");
+                loadTeam(teamData.id);
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Error removing player");
+            });
+    }
+    function updateInjuryStatus() {
+        const playerId = document.getElementById("injuryPlayerSelect").value;
+        const injuryStatus = document.getElementById("injuryStatusSelect").value;
+
+        if (!playerId) {
+            alert("Please select a player");
+            return;
+        }
+
+        fetch(`/player/${playerId}/${injuryStatus}`, {
+            method: "PUT"
+        })
+            .then(res => {
+                if (!res.ok) throw new Error("Failed to update injury status");
+                return res.text();
+            })
+            .then(msg => {
+                alert(msg);
+                loadTeam(teamData.id);
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Error updating injury status");
+            });
+    }
+</script>
+
+</body>
+</html>

@@ -1,22 +1,20 @@
 package com.soccer.event;
+import lombok.*;
+
 import java.util.Date;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Getter
+@Setter
 public class Injury {
-    private String type;       // e.g., "Hamstring", "Knee"
+    private String type;
     private Date injuryDate;
     private Date expectedRecoveryDate;
     private boolean recovered;
 
-    public Injury(String type, Date injuryDate, Date expectedRecoveryDate) {
-        this.type = type;
-        this.injuryDate = injuryDate;
-        this.expectedRecoveryDate = expectedRecoveryDate;
-        this.recovered = false;
-    }
-
     public void markRecovered() {
         this.recovered = true;
     }
-
-
 }

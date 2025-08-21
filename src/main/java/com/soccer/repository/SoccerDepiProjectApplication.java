@@ -1,6 +1,5 @@
-package com.soccer.soccer_depi_project;
+package com.soccer.repository;
 
-import org.bson.internal.BsonUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

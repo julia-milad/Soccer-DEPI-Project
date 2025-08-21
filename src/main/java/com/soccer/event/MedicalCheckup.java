@@ -1,17 +1,18 @@
 package com.soccer.event;
 
-import java.util.Date;
+import lombok.*;
 
+import java.util.Date;
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Getter
+@Setter
 public class MedicalCheckup {
     private Date date;
     private String doctorName;
     private String notes;
 
-    public MedicalCheckup(Date date, String doctorName, String notes) {
-        this.date = date;
-        this.doctorName = doctorName;
-        this.notes = notes;
-    }
 
 
 }

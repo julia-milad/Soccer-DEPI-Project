@@ -230,6 +230,10 @@
                     <p id="playerName"></p>
                 </div>
                 <div class="info-item">
+                    <h3>Team</h3>
+<!--                    <p id="playerTeam"></p>-->
+                </div>
+                <div class="info-item">
                     <h3>Role</h3>
                     <p id="playerRole"></p>
                 </div>
@@ -314,6 +318,7 @@
             .then(player => {
                 // document.getElementById('playerPhoto').src = player.photoUrl ?? 'images/football-main.jpg';
                 document.getElementById('playerName').textContent = player.name ?? undefined;
+                // document.getElementById('playerTeam').textContent = player.teamName ?? undefined;
                 document.getElementById('playerPosition').textContent = player.position ?? undefined;
                 document.getElementById('playerAge').textContent = player?.age ?? undefined;
                 document.getElementById('playerRole').textContent = player?.role ?? undefined;
