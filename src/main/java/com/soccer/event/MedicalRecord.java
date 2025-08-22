@@ -27,7 +27,4 @@ public class MedicalRecord {
         checkups.add(checkup);
     }
 
-//    public void setPlayer(Player player) {
-//        this.player = player;
-//    }
 }
