@@ -223,7 +223,7 @@
         </div>
 
         <div class="personal-info">
-            <img class="player-photo" src="images/football-main.jpg" alt="Player Photo">
+            <img id="playerImage" class="player-photo" src="images/football-main.jpg">
             <div class="info-grid">
                 <div class="info-item">
                     <h3>Name</h3>
@@ -231,11 +231,11 @@
                 </div>
                 <div class="info-item">
                     <h3>Team</h3>
-<!--                    <p id="playerTeam"></p>-->
+                    <p id="playerTeam"></p>
                 </div>
                 <div class="info-item">
                     <h3>Role</h3>
-                    <p id="playerRole"></p>
+                    <p id="playerRole">Player</p>
                 </div>
                 <div class="info-item">
                     <h3>Position</h3>
@@ -303,6 +303,12 @@
         <div class="status-section">
             <p class="status not-injured" id="playerInjured"></p>
         </div>
+        <div class="section" style="text-align:center; margin-top:20px;">
+            <button id="goToMedicalReportBtn"
+                    style="padding:10px 20px; background:#007BFF; color:white; border:none; border-radius:8px; cursor:pointer; font-size:1rem;">
+                View Medical Report
+            </button>
+        </div>
     </div>
 </div>
 <script>
@@ -314,30 +320,61 @@
             return;
         }
         fetch(`/player/email/${encodeURIComponent(email)}`)
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) throw new Error("Failed to fetch player");
+                return res.json();
+            })
             .then(player => {
-                // document.getElementById('playerPhoto').src = player.photoUrl ?? 'images/football-main.jpg';
-                document.getElementById('playerName').textContent = player.name ?? undefined;
-                // document.getElementById('playerTeam').textContent = player.teamName ?? undefined;
-                document.getElementById('playerPosition').textContent = player.position ?? undefined;
-                document.getElementById('playerAge').textContent = player?.age ?? undefined;
-                document.getElementById('playerRole').textContent = player?.role ?? undefined;
-                document.getElementById('playerEmail').textContent = player.email ?? undefined;
-                document.getElementById('playerPhone').textContent = player.phone ?? undefined;
-                document.getElementById('playerGoals').textContent = player.stats?.goals ?? undefined;
-                document.getElementById('playerAssists').textContent = player.stats?.assists ?? undefined;
-                document.getElementById('playerCompletedPasses').textContent = player.stats?.passesCompleted ?? undefined;
-                document.getElementById('playerDistanceCovered').textContent = player.stats?.distanceCovered ?? undefined;
-                document.getElementById('playerStamina').textContent = player.fitness?.stamina ?? undefined;
-                document.getElementById('playerSpeed').textContent = player.fitness?.speed ?? undefined;
-                document.getElementById('playerStrength').textContent = player.fitness?.strength ?? undefined;
-                document.getElementById('playerAgility').textContent = player.fitness?.agility ?? undefined;
-                document.getElementById("playerInjured").textContent = player.injured ? "Injured" : "Not Injured" ?? undefined;
+                sessionStorage.setItem("playerId", player.id);
+                document.getElementById('playerImage').src = player.image ?? "images/defaultPlayer.jpg";
+                document.getElementById('playerName').textContent = player.name ?? "";
+                document.getElementById('playerPosition').textContent = player.position ?? "";
+                document.getElementById('playerAge').textContent = player.age ?? "";
+                document.getElementById('playerRole').textContent = player.role ?? "";
+                document.getElementById('playerEmail').textContent = player.email ?? "";
+                document.getElementById('playerPhone').textContent = player.phone ?? "";
+                document.getElementById('playerGoals').textContent = player.stats?.goals ?? "0";
+                document.getElementById('playerAssists').textContent = player.stats?.assists ?? "0";
+                document.getElementById('playerCompletedPasses').textContent = player.stats?.passesCompleted ?? "0";
+                document.getElementById('playerDistanceCovered').textContent = player.stats?.distanceCovered ?? "0";
+                document.getElementById('playerStamina').textContent = player.fitness?.stamina ?? "N/A";
+                document.getElementById('playerSpeed').textContent = player.fitness?.speed ?? "N/A";
+                document.getElementById('playerStrength').textContent = player.fitness?.strength ?? "N/A";
+                document.getElementById('playerAgility').textContent = player.fitness?.agility ?? "N/A";
+                document.getElementById("playerInjured").textContent = player.injured ? "Injured" : "Not Injured";
+
+                if (!player.teamId) {
+                    document.getElementById('playerTeam').textContent = 'No team assigned';
+                } else {
+                    fetch(`/team/${player.teamId}`)
+                        .then(res => {
+                            if (!res.ok) throw new Error('Team not found');
+                            return res.json();
+                        })
+                        .then(team => {
+                            document.getElementById('playerTeam').textContent = team.name ?? 'No team';
+                        })
+                        .catch(err => {
+                            console.error("Failed to load team:", err);
+                            document.getElementById('playerTeam').textContent = 'Unknown team';
+                        });
+                }
             })
             .catch(err => {
                 console.error("Failed to load data:", err);
                 alert("Error loading profile");
             });
+        const btn = document.getElementById("goToMedicalReportBtn");
+        if (btn) {
+            btn.addEventListener("click", () => {
+                const id = sessionStorage.getItem("playerId");
+                if (!id) {
+                    alert("Player ID not found. Try reloading.");
+                    return;
+                }
+                window.location.href = `medicalReport.html?playerId=${id}`;
+            });
+        }
     });
 </script>
 </body>

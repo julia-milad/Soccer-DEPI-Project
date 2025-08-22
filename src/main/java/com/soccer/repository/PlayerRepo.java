@@ -6,4 +6,6 @@ import java.util.Optional;
 
 public interface PlayerRepo extends MongoRepository<Player, String> {
     Optional<Player> findByEmail(String email);
+
+    Player findByEmailAndTeamId(String email, String teamId);
 }

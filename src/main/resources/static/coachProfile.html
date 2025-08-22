@@ -188,7 +188,7 @@
         </div>
 
         <div class="personal-info">
-            <img class="player-photo" src="images/football-main.jpg" alt="Player Photo">
+            <img id="playerImage" class="player-photo" src="images/football-main.jpg">
             <div class="info-grid">
                 <div class="info-item">
                     <h3>Name</h3>
@@ -246,7 +246,8 @@
         fetch(`/coach/email/${encodeURIComponent(email)}`)
             .then(res => res.json())
             .then(coach => {
-                currentCoach = coach; // store globally
+                currentCoach = coach;
+                document.getElementById('coachImage').src = coach.image ?? "images/defaultPlayer.jpg";
                 document.getElementById('coachName').textContent = coach.name ?? '';
                 document.getElementById('coachRole').textContent = coach.role ?? '';
                 document.getElementById('coachEmail').textContent = coach.email ?? '';

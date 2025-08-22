@@ -13,6 +13,4 @@ public class MedicalCheckup {
     private String doctorName;
     private String notes;
 
-
-
 }

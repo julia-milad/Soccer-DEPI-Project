@@ -1,6 +1,5 @@
 package com.soccer.repository;
 
-import com.soccer.model.Player;
 import com.soccer.model.Team;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
