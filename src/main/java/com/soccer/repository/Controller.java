@@ -1,12 +1,16 @@
 package com.soccer.repository;
 
 import com.soccer.event.MedicalRecord;
+import com.soccer.event.TrainingSession;
 import com.soccer.model.Coach;
 import com.soccer.model.Player;
 import com.soccer.model.Team;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -23,6 +27,9 @@ public class Controller {
 
     @Autowired
     private MedicalRecordRepository recordRepo;
+
+    @Autowired
+    private TrainingSessionRepo sessionRepo;
 
     @PostMapping("/login")
     public String login(@RequestBody LoginRequest request) {
@@ -65,6 +72,10 @@ public class Controller {
     public Player getPlayerById(@PathVariable String id) {
         return playerRepo.findById(id).orElseThrow();
     }
+    @GetMapping("coach/id/{id}")
+    public Coach getCoachById(@PathVariable String id) {
+        return coachRepo.findById(id).orElseThrow();
+    }
 
     @GetMapping("player/email/{email}")
     public Player getPlayerByEmail(@PathVariable String email) {
@@ -81,6 +92,13 @@ public class Controller {
         return teamRepo.findById(id).orElseThrow();
     }
 
+    @GetMapping("/team/getPlayers/{name}")
+    public ArrayList<Player> getTeamPlayersByName(@PathVariable String name) {
+        Team team = teamRepo.findByName(name).orElseThrow(() -> new RuntimeException("Team not found with name: " + name)
+        );
+        ArrayList<String> playerIds = team.getPlayersIds();
+        return playerRepo.findAllByName(playerIds);
+    }
     @PostMapping("/team/{teamId}/addPlayer/{playerEmail}")
     public ResponseEntity<String> addPlayerToTeam(@PathVariable String teamId, @PathVariable String playerEmail) {
         Optional<Team> optionalTeam = teamRepo.findById(teamId);
@@ -136,6 +154,14 @@ public class Controller {
     @GetMapping("/medicalRecord/{playerId}")
     public MedicalRecord getMedicalRecord(@PathVariable String playerId) {
         return recordRepo.findByPlayerId(playerId).orElseThrow();
+    }
+    @PostMapping("/trainingSession/add")
+    public TrainingSession addSession(@RequestBody TrainingSession session) {
+        return sessionRepo.save(session);
+    }
+    @GetMapping("/trainingSession/coach/{coachName}")
+    public List<TrainingSession> getSessionsByCoach(@PathVariable String coachName) {
+        return sessionRepo.findByCoachName(coachName);
     }
 
 }

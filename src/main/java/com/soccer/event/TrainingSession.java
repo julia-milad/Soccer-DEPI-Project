@@ -1,8 +1,8 @@
 package com.soccer.event;
 
-import com.soccer.model.Team;
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,25 +11,17 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
+@Document(collection = "TrainingSessions")
 public class TrainingSession {
+
     @Id
     private String id;
     private String date;
     private String focusArea;
     private String drillDescription;
-    private String coachId;
-    private List<String> playerIds = new ArrayList<>();
-    private String teamId;
+    private String coachName;
+    private String teamName;
+//    private List<String> playerIds = new ArrayList<>();
 
-
-
-    public void addPlayer(String playerId) {
-        if (!playerIds.contains(playerId)) {
-            playerIds.add(playerId);
-        }
-    }
-
-    public String sessionSummary() {
-        return "Session on " + date + " | Focus: " + focusArea + " | Drill: " + drillDescription;
-    }
 }

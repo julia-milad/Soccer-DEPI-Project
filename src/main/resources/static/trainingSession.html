@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Training Sessions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f9f9f9;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        input, textarea, button {
+            margin: 8px 0;
+            padding: 8px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+<h1>Training Sessions</h1>
+
+<form id="sessionForm">
+    <label for="date">Date:</label>
+    <input type="date" id="date" required><br><br>
+
+    <label for="focusArea">Focus Area:</label>
+    <select id="focusArea" required>
+        <option value="">-- Select Focus Area --</option>
+        <option value="Passing">Passing</option>
+        <option value="Shooting">Shooting</option>
+        <option value="Dribbling">Dribbling</option>
+        <option value="Defending">Defending</option>
+        <option value="Fitness">Fitness</option>
+        <option value="Strategy">Strategy</option>
+    </select><br><br>
+
+    <label for="drillDescription">Drill Description:</label>
+    <textarea id="drillDescription" required></textarea><br><br>
+
+    <button type="submit">Add Session</button>
+</form>
+
+<h2>Sessions List</h2>
+<div id="sessionsList"></div>
+
+<script>
+    let sessions = [];
+
+    function renderSessions() {
+        const list = document.getElementById("sessionsList");
+        list.innerHTML = "";
+        sessions.forEach(s => {
+            const div = document.createElement("div");
+            div.className = "session-item";
+            div.innerHTML = `
+          <p><b>Date:</b> ${s.date}</p>
+          <p><b>Focus Area:</b> ${s.focusArea}</p>
+          <p><b>Description:</b> ${s.drillDescription}</p>
+          <p><b>Team:</b> ${s.teamName}</p>
+          <p><b>Coach:</b> ${s.coachName}</p>
+        `;
+            list.appendChild(div);
+        });
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+        const coachName = sessionStorage.getItem("coachName");
+        fetch(`/trainingSession/coach/${coachName}`)
+            .then(res => res.json())
+            .then(data => {
+                sessions = data;
+                renderSessions();
+            })
+            .catch(err => console.error("Error loading sessions:", err));
+    });
+    document.getElementById("sessionForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const newSession = {
+            date: document.getElementById("date").value,
+            focusArea: document.getElementById("focusArea").value,
+            drillDescription: document.getElementById("drillDescription").value,
+            teamName: sessionStorage.getItem("coachTeamName"),
+            coachName: sessionStorage.getItem("coachName"),
+        };
+
+        fetch("/trainingSession/add", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newSession)
+        })
+            .then(res => res.json())
+            .then(saved => {
+                sessions.push(saved);
+                renderSessions();
+                document.getElementById("sessionForm").reset();
+            })
+            .catch(err => console.error("Error saving session:", err));
+    });
+</script>
+</body>
+
+</html>
