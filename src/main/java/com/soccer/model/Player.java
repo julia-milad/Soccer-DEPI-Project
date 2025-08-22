@@ -5,7 +5,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 
@@ -16,6 +15,10 @@ public class Player extends Person {
     private Stats stats;
     private Fitness fitness;
     private boolean injured;
+
+    public Player(){
+        super.role = "Player";
+    }
 
     public void markInjured() {
         this.injured = true;

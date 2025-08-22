@@ -1,6 +1,9 @@
 package com.soccer.event;
 import com.soccer.model.Player;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.ArrayList;
 
 @NoArgsConstructor
@@ -8,20 +11,23 @@ import java.util.ArrayList;
 @Data
 @Getter
 @Setter
+@Document(collection = "MedicalRecords")
 public class MedicalRecord {
-    private Player player;
-    private ArrayList<Injury> injuryHistory;
-    private ArrayList<MedicalCheckup> checkups;
+    @Id
+    private String id;
 
-    public MedicalRecord(Player player) {
-        this.player = player;
-    }
+    private String playerId;
+    private ArrayList<Injury> injuryHistory = new ArrayList<>();
+    private ArrayList<MedicalCheckup> checkups = new ArrayList<>();
 
     public void addInjury(Injury injury) {
         injuryHistory.add(injury);
     }
-
     public void addCheckup(MedicalCheckup checkup) {
         checkups.add(checkup);
     }
+
+//    public void setPlayer(Player player) {
+//        this.player = player;
+//    }
 }
