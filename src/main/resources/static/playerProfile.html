@@ -3,126 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <title>Player Profile</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
-        :root {
-            --primary-bg: #1A1A1D;
-            --card-bg: #2C2C32;
-            --accent-color: #61A4E3;
-            --text-color: #E2E2E5;
-            --heading-color: #C0C0C7;
-            --box-shadow: rgba(0, 0, 0, 0.4);
-        }
-
         html, body {
             margin: 0;
             padding: 0;
+            font-family: 'Poppins', sans-serif;
+            color: var(--color-text-light);
             min-height: 100vh;
-            font-family: 'Roboto', sans-serif;
-            color: var(--text-color);
         }
-
         body {
-            background-image: url('images/football-main.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            position: relative;
-            background-attachment: fixed;
+            background: url('/images/football-main.jpg') center/cover fixed no-repeat;
         }
-
         body::before {
             content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
-            z-index: 1;
+            position: fixed;
+            inset: 0;
+            background-color: var(--color-bg-overlay);
+            backdrop-filter: blur(4px);
+            z-index: -1;
         }
-
-        .profile-container {
-            position: relative;
-            z-index: 2;
-            padding: 40px 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .profile-card {
-            max-width: 700px;
-            width: 100%;
-            background: var(--card-bg);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px var(--box-shadow);
-            padding: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .profile-card:hover {
-            transform: translateY(-5px);
-        }
-
         .header {
             text-align: center;
             margin-bottom: 25px;
-            position: relative;
+            z-index: 2; position: relative;
         }
 
         .header h1 {
-            color: var(--accent-color);
-            font-size: 2.5rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin: 0;
+            color: var(--color-secondary);
+            font-size: 2.5rem; font-weight: 700; text-transform: uppercase;
+        }
+
+        .profile-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 30px;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 2;
+            animation: fadeIn 1s ease-in-out;
+
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .column {
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .column h2 {
+            color: var(--color-secondary);
+            border-bottom: 2px solid var(--color-secondary);
+            padding-bottom: 8px;
+            margin-bottom: 20px;
         }
 
         .personal-info {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 30px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
         }
 
         .player-photo {
-            width: 180px;
-            height: 180px;
+            width: 180px; height: 180px;
             border-radius: 50%;
             object-fit: cover;
-            border: 4px solid var(--accent-color);
-            box-shadow: 0 0 15px rgba(97, 164, 227, 0.5);
+            border: 4px solid var(--color-secondary);
+            box-shadow: 0 0 15px rgba(76,201,240,0.5);
             transition: transform 0.4s ease-in-out;
+            margin-bottom: 15px;
         }
 
         .player-photo:hover {
             transform: scale(1.05);
         }
 
+        .info-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        button#goToMedicalReportBtn {
+            padding: 10px 20px;
+            background: var(--color-secondary);
+            color: var(--color-text-light);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button#goToMedicalReportBtn:hover {
+            background: var(--color-secondary-dark);
+        }
+
         .info-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: 1fr 1fr ;
             gap: 15px;
             width: 100%;
         }
 
         .info-item {
-            background-color: rgba(97, 164, 227, 0.1);
+            background-color: rgba(76,201,240,0.1);
             border-radius: 10px;
             padding: 15px;
-            border-left: 3px solid var(--accent-color);
+            border-left: 3px solid var(--color-secondary);
+        }
+
+        .upper-part {
+            display: flex;
+            justify-content: flex-start;
+            gap: 100px;
+        }
+
+        .info-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .info-item h3 {
             margin: 0 0 5px 0;
-            color: var(--accent-color);
+            color: var(--color-secondary);
             font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -132,187 +140,96 @@
             margin: 0;
             font-size: 1.1rem;
             font-weight: 500;
-        }
-
-        .section {
-            margin-top: 30px;
-        }
-
-        .section h2 {
-            color: var(--heading-color);
-            font-size: 1.5rem;
-            border-bottom: 2px solid var(--accent-color);
-            padding-bottom: 8px;
-            margin-bottom: 20px;
+            color: var(--color-text-light);
         }
 
         .stat-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 20px;
         }
 
         .stat-box {
-            background: rgba(44, 44, 50, 0.7);
+            background: rgba(29,53,87,0.7);
             border-radius: 10px;
             padding: 20px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: background 0.3s ease;
-        }
-
-        .stat-box:hover {
-            background: rgba(44, 44, 50, 0.9);
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
         .stat-box .label {
             display: block;
             font-size: 0.9rem;
-            color: var(--heading-color);
-            margin-bottom: 5px;
+            color: var(--color-text-light);
+            margin-top: 5px;
         }
 
         .stat-box .value {
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: 700;
-            color: var(--accent-color);
+            color: var(--color-secondary);
         }
 
-        .status-section {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .status-section .status {
-            font-size: 1.8rem;
-            font-weight: 700;
-            padding: 10px 20px;
-            border-radius: 50px;
-            display: inline-block;
-            transition: all 0.3s ease;
-        }
-
-        .status.not-injured {
-            background-color: #2ECC71;
-            color: #fff;
-            box-shadow: 0 0 15px rgba(46, 204, 113, 0.5);
-        }
-
-        .status.injured {
-            background-color: #E74C3C;
-            color: #fff;
-            box-shadow: 0 0 15px rgba(231, 76, 60, 0.5);
-        }
-
-        @media (max-width: 600px) {
-            .personal-info {
-                flex-direction: column;
-                text-align: center;
-            }
-            .info-grid {
+        @media (max-width: 1000px) {
+            .profile-container {
                 grid-template-columns: 1fr;
+            }
+            .info-actions {
+                justify-content: center;
             }
         }
     </style>
 </head>
 <body>
+
+<div class="header">
+    <h1>Profile</h1>
+</div>
+
 <div class="profile-container">
-    <div class="profile-card">
-        <div class="header">
-            <h1>Profile</h1>
+    <div class="column personal-info">
+    <div class="upper-part">
+        <img id="playerImage" class="player-photo" src="images/football-main.jpg" alt="No image">
+        <div class="info-actions">
+            <button id="goToMedicalReportBtn">View Medical Report</button>
         </div>
+    </div>
+        <div class="info-grid">
+            <div class="info-item"><h3>Name</h3><p id="playerName"></p></div>
+            <div class="info-item"><h3>Team</h3><p id="playerTeam"></p></div>
+            <div class="info-item"><h3>Role</h3><p id="playerRole">Player</p></div>
+            <div class="info-item"><h3>Position</h3><p id="playerPosition"></p></div>
+            <div class="info-item"><h3>Age</h3><p id="playerAge"></p></div>
+            <div class="info-item"><h3>Email</h3><p id="playerEmail"></p></div>
+            <div class="info-item"><h3>Phone</h3><p id="playerPhone"></p></div>
+            <div class="info-item"><h3>Injured</h3><p id="playerInjured"></p></div>
+        </div>
+    </div>
 
-        <div class="personal-info">
-            <img id="playerImage" class="player-photo" src="images/football-main.jpg">
-            <div class="info-grid">
-                <div class="info-item">
-                    <h3>Name</h3>
-                    <p id="playerName"></p>
-                </div>
-                <div class="info-item">
-                    <h3>Team</h3>
-                    <p id="playerTeam"></p>
-                </div>
-                <div class="info-item">
-                    <h3>Role</h3>
-                    <p id="playerRole">Player</p>
-                </div>
-                <div class="info-item">
-                    <h3>Position</h3>
-                    <p id="playerPosition"></p>
-                </div>
-                <div class="info-item">
-                    <h3>Age</h3>
-                    <p id="playerAge"></p>
-                </div>
-                <div class="info-item">
-                    <h3>Email</h3>
-                    <p id="playerEmail"></p>
-                </div>
-                <div class="info-item">
-                    <h3>Phone</h3>
-                    <p id="playerPhone"></p>
-                </div>
-            </div>
+    <!-- Stats Column -->
+    <div class="column stats">
+        <h2>Performance Statistics</h2>
+        <div class="stat-grid">
+            <div class="stat-box"><span class="value" id="playerGoals"></span><span class="label">Goals</span></div>
+            <div class="stat-box"><span class="value" id="playerAssists"></span><span class="label">Assists</span></div>
+            <div class="stat-box"><span class="value" id="playerCompletedPasses"></span><span class="label">Completed Passes</span></div>
+            <div class="stat-box"><span class="value" id="playerDistanceCovered"></span><span class="label">Distance Covered (km)</span></div>
         </div>
+    </div>
 
-        <div class="section">
-            <h2>Performance Statistics</h2>
-            <div class="stat-grid">
-                <div class="stat-box">
-                    <span class="value" id="playerGoals"></span>
-                    <span class="label">Goals</span>
-                </div>
-                <div class="stat-box">
-                    <span class="value" id="playerAssists"></span>
-                    <span class="label">Assists</span>
-                </div>
-                <div class="stat-box">
-                    <span class="value" id="playerCompletedPasses"></span>
-                    <span class="label">Completed Passes</span>
-                </div>
-                <div class="stat-box">
-                    <span class="value" id="playerDistanceCovered"></span>
-                    <span class="label">Distance Covered (km)</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>Fitness Metrics</h2>
-            <div class="stat-grid">
-                <div class="stat-box">
-                    <span class="value" id="playerStamina"></span>
-                    <span class="label">Stamina</span>
-                </div>
-                <div class="stat-box">
-                    <span class="value" id="playerSpeed"></span>
-                    <span class="label">Speed</span>
-                </div>
-                <div class="stat-box">
-                    <span class="value" id="playerStrength"></span>
-                    <span class="label">Strength</span>
-                </div>
-                <div class="stat-box">
-                    <span class="value" id="playerAgility"></span>
-                    <span class="label">Agility</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="status-section">
-            <p class="status not-injured" id="playerInjured"></p>
-        </div>
-        <div class="section" style="text-align:center; margin-top:20px;">
-            <button id="goToMedicalReportBtn"
-                    style="padding:10px 20px; background:#007BFF; color:white; border:none; border-radius:8px; cursor:pointer; font-size:1rem;">
-                View Medical Report
-            </button>
+    <!-- Fitness Column -->
+    <div class="column fitness">
+        <h2>Fitness Metrics</h2>
+        <div class="stat-grid">
+            <div class="stat-box"><span class="value" id="playerStamina"></span><span class="label">Stamina</span></div>
+            <div class="stat-box"><span class="value" id="playerSpeed"></span><span class="label">Speed</span></div>
+            <div class="stat-box"><span class="value" id="playerStrength"></span><span class="label">Strength</span></div>
+            <div class="stat-box"><span class="value" id="playerAgility"></span><span class="label">Agility</span></div>
         </div>
     </div>
 </div>
+
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
         const email = sessionStorage.getItem("playerEmail");
         if (!email) {
             alert("Please login first.");

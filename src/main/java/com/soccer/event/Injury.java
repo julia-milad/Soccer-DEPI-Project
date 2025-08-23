@@ -3,8 +3,6 @@ import lombok.*;
 
 import java.util.Date;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
 @Getter
 @Setter
@@ -14,7 +12,15 @@ public class Injury {
     private Date expectedRecoveryDate;
     private boolean recovered;
 
+    public Injury(String type, Date injuryDate, Date expectedRecoveryDate) {
+        this.type = type;
+        this.injuryDate = injuryDate;
+        this.expectedRecoveryDate = expectedRecoveryDate;
+    }
     public void markRecovered() {
         this.recovered = true;
+    }
+    public void displayInjury() {
+        System.out.println("Injury: {" + " Type: " +type + " ,Injury Date: " + injuryDate + " ,Expected Recovery Date: " + expectedRecoveryDate+" }");
     }
 }

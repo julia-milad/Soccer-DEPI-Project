@@ -23,6 +23,11 @@ public abstract class Person {
     private String image;
     private String teamId;
 
-
-
+    public void displayInfo() {
+        System.out.println("id='" + id + '\'' + ", name='" + name + '\'' +
+                ", email='" + email + '\'' + ", password='" + password + '\'' +", role='" + role + '\'' +
+                ", age=" + age + ", phone='" + phone + '\'' + ", image='" + image + ", teamId='" + teamId + '\'' +
+                '}'
+        );
+    }
 }

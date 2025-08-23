@@ -28,4 +28,11 @@ public class Player extends Person {
         this.injured = false;
     }
 
+    public void displayPlayer() {
+        System.out.println("Player: " + "Position: " + position + " ,Healthy: " + injured);
+        super.displayInfo();
+        stats.displayStats();
+        fitness.displayFitness();
+        System.out.println();
+    }
 }

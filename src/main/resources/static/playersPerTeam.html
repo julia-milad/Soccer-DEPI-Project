@@ -3,49 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <title>Team Profile</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            color: var(--color-text-light);
+            min-height: 100vh;
+        }
         body {
-            font-family: Arial, sans-serif;
-            background: #f7f7f7;
-            padding: 20px;
+            background: url('/images/football-main.jpg') center/cover fixed no-repeat;
         }
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: var(--color-bg-overlay);
+            backdrop-filter: blur(4px);
+            z-index: -1;
+        }
+
         .team-container {
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            width: 500px;
-            margin: auto;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background: transparent;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 1s ease-in-out;
         }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         h2 {
             text-align: center;
-            color: #333;
+            color: var(--color-secondary);
+            font-size: 2.2em;
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
         }
+
         .section {
-            margin: 15px 0;
+            margin: 25px 0;
+            padding: 20px;
+            background: var(--color-primary);
+            border-radius: 15px;
+            border-left: 4px solid transparent;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
         .section strong {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            color: white;
         }
+
+        #teamName, #coachName {
+            font-size: 1.2em;
+            color: white;
+            font-weight: 600;
+        }
+
         ul {
-            list-style: square;
-            padding-left: 20px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
         }
+
+        ul li {
+            background: var(--color-secondary-dark);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            border: 1px solid var(--border-color);
+            transition: background 0.3s ease;
+        }
+
+        ul li:hover {
+            background: var(--color-secondary);
+        }
+
         input, button, select {
-            padding: 8px;
-            margin: 5px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--color-secondary-dark);
+            color: white;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
         }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: white;
+        }
+
+        input::placeholder {
+            color: white;
+        }
+
         button {
             cursor: pointer;
-            background: #007bff;
+            background: var(--color-secondary-dark);
             color: white;
+            font-weight: 600;
             border: none;
+            transition: background 0.3s ease, transform 0.2s ease;
         }
+
         button:hover {
-            background: #0056b3;
+            background: var(--color-secondary);
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
         }
     </style>
 </head>

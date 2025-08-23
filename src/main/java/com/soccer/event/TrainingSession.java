@@ -22,6 +22,5 @@ public class TrainingSession {
     private String drillDescription;
     private String coachName;
     private String teamName;
-//    private List<String> playerIds = new ArrayList<>();
 
 }

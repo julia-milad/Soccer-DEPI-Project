@@ -3,71 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <title>Training Sessions</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            color: var(--color-text-light);
+            min-height: 100vh;
+        }
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background: #f9f9f9;
+            background: url('/images/football-main.jpg') center/cover fixed no-repeat;
         }
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: var(--color-bg-overlay);
+            backdrop-filter: blur(4px);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background: transparent;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         h1, h2 {
-            color: #333;
+            text-align: center;
+            color: var(--color-secondary);
+            font-size: 2.2em;
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
         }
-        input, textarea, button {
-            margin: 8px 0;
-            padding: 8px;
-            width: 100%;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
+
+        label {
+            font-weight: 600;
+            color: white;
+        }
+
+        input, textarea, select {
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--color-primary);
+            color: white;
+            font-size: 1em;
+            transition: border-color 0.3s ease, transform 0.2s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            transform: scale(1.01);
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: white;
+        }
+
         button {
-            background: #007bff;
+            padding: 12px;
+            background: var(--color-secondary-dark);
             color: white;
             border: none;
+            border-radius: 10px;
+            font-weight: 600;
             cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
         }
+
         button:hover {
-            background: #0056b3;
+            background: var(--color-secondary);
+            transform: translateY(-2px);
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
+
+        button:active {
+            transform: translateY(0);
         }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
+
+        #sessionsList {
+            margin-top: 25px;
+            display: grid;
+            gap: 20px;
         }
-        th {
-            background: #f1f1f1;
+
+        .session-item {
+            background: var(--color-primary);
+            border-radius: 15px;
+            padding: 20px;
+            border-left: 4px solid var(--color-secondary);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
+        .session-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .session-item p {
+            margin: 5px 0;
+            font-size: 0.95em;
+        }
+
+        .session-item b {
+            color: var(--color-secondary);
+            font-weight: 600;
+        }
+
     </style>
 </head>
 <body>
-<h1>Training Sessions</h1>
+<div class="container">
+    <h1>Training Sessions</h1>
 
-<form id="sessionForm">
-    <label for="date">Date:</label>
-    <input type="date" id="date" required><br><br>
+    <form id="sessionForm">
+        <label for="date">Date:</label>
+        <input type="date" id="date" required>
 
-    <label for="focusArea">Focus Area:</label>
-    <select id="focusArea" required>
-        <option value="">-- Select Focus Area --</option>
-        <option value="Passing">Passing</option>
-        <option value="Shooting">Shooting</option>
-        <option value="Dribbling">Dribbling</option>
-        <option value="Defending">Defending</option>
-        <option value="Fitness">Fitness</option>
-        <option value="Strategy">Strategy</option>
-    </select><br><br>
+        <label for="focusArea">Focus Area:</label>
+        <select id="focusArea" required>
+            <option value="">-- Select Focus Area --</option>
+            <option value="Passing">Passing</option>
+            <option value="Shooting">Shooting</option>
+            <option value="Dribbling">Dribbling</option>
+            <option value="Defending">Defending</option>
+            <option value="Fitness">Fitness</option>
+            <option value="Strategy">Strategy</option>
+        </select>
 
-    <label for="drillDescription">Drill Description:</label>
-    <textarea id="drillDescription" required></textarea><br><br>
+        <label for="drillDescription">Drill Description:</label>
+        <textarea id="drillDescription" required></textarea>
 
-    <button type="submit">Add Session</button>
-</form>
+        <button type="submit">Add Session</button>
+    </form>
 
-<h2>Sessions List</h2>
-<div id="sessionsList"></div>
+    <h2>Sessions List</h2>
+    <div id="sessionsList"></div>
+</div>
 
 <script>
     let sessions = [];
@@ -125,5 +219,4 @@
     });
 </script>
 </body>
-
 </html>
