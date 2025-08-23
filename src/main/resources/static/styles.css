@@ -1,0 +1,11 @@
+:root {
+    --color-primary: #0D1B2A;
+    --color-secondary: #e0a82e;
+    --color-secondary-dark: #c18f24;
+    --color-accent: #4cc9f0;
+    --color-danger: #e63946;
+    --color-text-light: #f1faee;
+    --color-bg-overlay: rgba(0, 0, 0, 0.6);
+    --color-navbar-bg: rgba(0, 0, 0, 0.55);
+
+}

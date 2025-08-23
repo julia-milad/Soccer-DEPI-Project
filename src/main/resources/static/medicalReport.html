@@ -3,94 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <title>Medical Report</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            color: var(--color-text-light);
+            min-height: 100vh;
+        }
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background: #f9f9f9;
+            background: url('/images/football-main.jpg') center/cover fixed no-repeat;
         }
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: var(--color-bg-overlay);
+            backdrop-filter: blur(4px);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background: transparent;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         h1, h2 {
-            color: #333;
+            color: var(--color-secondary);
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
         }
+
         .section {
-            background: white;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 30px 0;
+            padding: 0 10px;
         }
+
+        .section h2 {
+            text-align: left;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            border-bottom: 2px solid var(--color-secondary-dark);
+            padding-bottom: 5px;
+            color: #f0f0f0;
+        }
+
+        .section p {
+            font-size: 0.9em;
+            color: var(--color-secondary-dark);
+            margin: 0 0 10px 0;
+        }
+
+        .section strong {
+            font-weight: 700;
+            color: var(--color-secondary-dark);
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            margin-top: 15px;
+
         }
+
         th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
+            border: 1px solid #333;
+            padding: 12px;
+            text-align: left;
+            font-size: 0.9em;
+
         }
+
         th {
-            background: #eee;
+            background: var(--color-secondary);
+            color: black;
+            font-weight: 700;
+            text-transform: uppercase;
         }
-        .btn {
-            background: #007BFF;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
+
+        td {
+            background: var(--color-primary);
         }
-        .btn:hover {
-            background: #0056b3;
+
+        tbody tr:nth-child(even) td {
+            background: transparent;
         }
+
+        #playerStatus {
+            font-weight: bold;
+            color: var(--color-secondary);
+        }
+
     </style>
 </head>
 <body>
 
-<h1>Medical Report</h1>
+<div class="container">
+    <h1>Medical Report</h1>
 
-<div class="section">
-    <h2>Player Information</h2>
-    <p><strong>Current Status:</strong> <span id="playerStatus"></span></p>
+    <div class="section">
+        <h2>Player Information</h2>
+        <p><strong>Current Status:</strong> <span id="playerStatus"></span></p>
+    </div>
+
+    <div class="section">
+        <h2>Injury History</h2>
+        <p id="injurySummary"></p>
+        <table id="injuryTable">
+            <thead>
+            <tr>
+                <th>Type</th>
+                <th>Injury Date</th>
+                <th>Expected Recovery</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr><td colspan="4" style="text-align:center;">Loading...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Medical Checkups</h2>
+        <p id="checkupSummary"></p>
+        <table id="checkupTable">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Doctor</th>
+                <th>Notes</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr><td colspan="3" style="text-align:center;">Loading...</td></tr>
+            </tbody>
+        </table>
+    </div>
 </div>
-
-<div class="section">
-    <h2>Injury History</h2>
-    <p id="injurySummary"></p>
-    <table id="injuryTable">
-        <thead>
-        <tr>
-            <th>Type</th>
-            <th>Injury Date</th>
-            <th>Expected Recovery</th>
-            <th>Status</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr><td colspan="4" style="text-align:center;">Loading...</td></tr>
-        </tbody>
-    </table>
-</div>
-
-<div class="section">
-    <h2>Medical Checkups</h2>
-    <p id="checkupSummary"></p>
-    <table id="checkupTable">
-        <thead>
-        <tr>
-            <th>Date</th>
-            <th>Doctor</th>
-            <th>Notes</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr><td colspan="3" style="text-align:center;">Loading...</td></tr>
-        </tbody>
-    </table>
-</div>
-
-<button class="btn" onclick="window.print()">Download PDF</button>
 
 <script>
     function getPlayerId() {

@@ -27,4 +27,7 @@ public class MedicalRecord {
         checkups.add(checkup);
     }
 
+    public void displayMedicalRecord() {
+        System.out.println("Medical Record: {"+"Player Id: "+playerId+" ,Injury History: "+injuryHistory+"Checkups: "+checkups+" }");
+    }
 }

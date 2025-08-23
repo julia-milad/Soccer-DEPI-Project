@@ -37,10 +37,8 @@ public class Team {
     public void scheduleTraining(TrainingSession session) {
         trainingHistory.add(session);
     }
-    public String teamInfo() {
-        return "Team: " + name +
-                " | Coach ID: " + coachName +
-                " | Players: " + (playersIds != null ? playersIds.size() : 0);
+    public void displayTeamInfo() {
+        System.out.println("Team: " + name + " | Coach ID: " + coachName +" | Players: " + (playersIds != null ? playersIds.size() : 0));
     }
 
 }
