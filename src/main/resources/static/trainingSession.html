@@ -82,6 +82,11 @@
             color: white;
         }
 
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(100%) brightness(200%);
+            cursor: pointer;
+        }
+
         button {
             padding: 12px;
             background: var(--color-secondary-dark);
@@ -163,60 +168,6 @@
     <div id="sessionsList"></div>
 </div>
 
-<script>
-    let sessions = [];
-
-    function renderSessions() {
-        const list = document.getElementById("sessionsList");
-        list.innerHTML = "";
-        sessions.forEach(s => {
-            const div = document.createElement("div");
-            div.className = "session-item";
-            div.innerHTML = `
-          <p><b>Date:</b> ${s.date}</p>
-          <p><b>Focus Area:</b> ${s.focusArea}</p>
-          <p><b>Description:</b> ${s.drillDescription}</p>
-          <p><b>Team:</b> ${s.teamName}</p>
-          <p><b>Coach:</b> ${s.coachName}</p>
-        `;
-            list.appendChild(div);
-        });
-    }
-
-    window.addEventListener("DOMContentLoaded", () => {
-        const coachName = sessionStorage.getItem("coachName");
-        fetch(`/trainingSession/coach/${coachName}`)
-            .then(res => res.json())
-            .then(data => {
-                sessions = data;
-                renderSessions();
-            })
-            .catch(err => console.error("Error loading sessions:", err));
-    });
-    document.getElementById("sessionForm").addEventListener("submit", function(e) {
-        e.preventDefault();
-
-        const newSession = {
-            date: document.getElementById("date").value,
-            focusArea: document.getElementById("focusArea").value,
-            drillDescription: document.getElementById("drillDescription").value,
-            teamName: sessionStorage.getItem("coachTeamName"),
-            coachName: sessionStorage.getItem("coachName"),
-        };
-
-        fetch("/trainingSession/add", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newSession)
-        })
-            .then(res => res.json())
-            .then(saved => {
-                sessions.push(saved);
-                renderSessions();
-                document.getElementById("sessionForm").reset();
-            })
-            .catch(err => console.error("Error saving session:", err));
-    });
-</script>
+<script src="main.js"></script>
 </body>
 </html>

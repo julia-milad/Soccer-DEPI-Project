@@ -155,7 +155,7 @@
         <div class="hero-section">
             <h1>Welcome</h1>
             <h2>TMS - Training Management System</h2>
-            <p>Where passion meets the pitch.</p>
+            <p>Where champions are made.</p>
         </div>
         <div class="intro">
             <p>Train smarter, track your progress, and improve your skills with professional coaches.</p>
@@ -191,36 +191,7 @@
         </div>
     </div>
 </div>
-<script>
-    function login() {
-        const data = {
-            email: document.getElementById("email").value,
-            password: document.getElementById("password").value,
-            role: document.getElementById("role").value
-        };
 
-        fetch("/login", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(data)
-        })
-            .then(res => res.text())
-            .then(msg => {
-                if (msg.includes("/playerProfile")) {
-                    sessionStorage.setItem("playerEmail", data.email);
-                    window.location.href = "playerProfile.html";
-                } else if (msg.includes("/coachProfile")) {
-                    sessionStorage.setItem("coachEmail", data.email);
-                    window.location.href = "coachProfile.html";
-                } else {
-                    alert(msg);
-                }
-            })
-            .catch(error => {
-                console.error("Login failed:", error);
-                alert("Login failed. Please try again.");
-            });
-    }
-</script>
+<script src="main.js"></script>
 </body>
 </html>

@@ -21,7 +21,6 @@ public class Team {
     private String name;
     private String coachName;
     private ArrayList<String> playersIds;
-    private ArrayList<TrainingSession> trainingHistory;
 
     public void addPlayer(String playerId) {
         this.playersIds.add(playerId);
@@ -34,9 +33,7 @@ public class Team {
     public boolean isExistPlayer(String playerId) {
         return this.playersIds.contains(playerId);
     }
-    public void scheduleTraining(TrainingSession session) {
-        trainingHistory.add(session);
-    }
+
     public void displayTeamInfo() {
         System.out.println("Team: " + name + " | Coach ID: " + coachName +" | Players: " + (playersIds != null ? playersIds.size() : 0));
     }
