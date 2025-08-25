@@ -7,9 +7,9 @@ This system is designed to help sports clubs, academies, and coaches organize an
 
 ## 👥 User Management
 
-Add, update, and manage Players, Teams, and Coaches.
+Players can track their performance and access their medical reports.
 
-Assign players to teams and link them with coaches.
+Coaches have their own profile, and manage team training sessions.
 
 ## 🏟 Training Sessions
 
